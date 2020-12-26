@@ -26,15 +26,15 @@ end
 %% 初始化只包含单个主用户时的场景参数
 function scene = initScene()
     %scene中用于保存需要在后续函数中传递的参数
-    scene.n_SU = 5;%次级用户数
-    scene.n_PU = 5;%主网络用户数
-    scene.n_ante_AP = 6;%次级接入点天线数
-    scene.n_ante_PU = 7;%主用户天线数
-    scene.n_ante_SU = 8;%次级用户天线数
-    scene.m_IRS = 5;%IRS反射单元个数
-    scene.noise_SU = 1e-11;%次级用户处噪声平均功率
+    scene.n_SU = 3;%次级用户数
+    scene.n_PU = 3;%主网络用户数
+    scene.n_ante_AP = 4;%次级接入点天线数
+    scene.n_ante_PU = 2;%主用户天线数
+    scene.n_ante_SU = 2;%次级用户天线数
+    scene.m_IRS = 10;%IRS反射单元个数
+    scene.noise_SU = 1e-6;%次级用户处噪声平均功率
     scene.max_pow = 0.2;%定义最大功率
-    scene.leak_pow = 1e-5;%定义主用户的干扰泄漏约束阈值
+    scene.leak_pow = 2e-4;%定义主用户的干扰泄漏约束阈值
     scene.n_data = min(scene.n_ante_AP,scene.n_ante_SU);%发射的数据流数量
 end
 
@@ -43,13 +43,12 @@ function pos = initNodePos(n_SU)
     %各个节点的位置
     pos.AP.x = 0;%次级接入点位置
     pos.AP.y = 0;
-    %主用户和次级用户的位置需要修改
-    pos.PUs.x = -10 + 10*rand(1,n_PU);%各个主网络用户的位置
-    pos.PUs.y = 30 + 10*rand(1,n_PU);
-    pos.SUs.x = -5 + 10*rand(1,n_SU);%各个次级用户的位置
-    pos.SUs.y = 20 + 10*rand(1,n_SU);
-    pos.IRS.x = 40;%IRS的位置
-    pos.IRS.y = 10;
+    pos.PUs.x = 50 + 4*(rand(1,n_SU)-0.5);%各个次级用户的位置在（50,0）点为中心,边长为4的正方形中
+    pos.PUs.y = 4*(rand(1,n_SU)-0.5);
+    pos.SUs.x = 30 + 4*(rand(1,n_SU)-0.5);%各个次级用户的位置在（30,0）点为中心,边长为4的正方形中
+    pos.SUs.y = 4*(rand(1,n_SU)-0.5);
+    pos.IRS.x = 30;%IRS的位置
+    pos.IRS.y = 5;
 end
 
 %% 初始化各个节点间距离参数
@@ -84,11 +83,14 @@ function channel = setChannel(scene, dist)
     h_IRS_PUs = randn(scene.n_ante_PU,scene.m_IRS,scene.n_PU)+1j*randn(scene.n_ante_PU,scene.m_IRS,scene.n_PU); 
     h_IRS_SUs = randn(scene.n_ante_SU,scene.m_IRS,scene.n_SU)+1j*randn(scene.n_ante_SU,scene.m_IRS,scene.n_SU); 
 
+    %对与主用户相关的信道单独处理
+    for i = 1:scene.n_PU
+        h_AP_PUs(:,:,i) = h_AP_PUs(:,:,i)*pathloss.AP_PUs(i);
+        h_IRS_PUs(:,:,i) = h_IRS_PUs(:,:,i)*pathloss.IRS_PUs(i);
+    end
     %对与次级用户相关的信道单独处理
     for i = 1:scene.n_SU
-        h_AP_PUs(:,:,i) = h_AP_PUs(:,:,i)*pathloss.AP_PUs(i);
         h_AP_SUs(:,:,i) = h_AP_SUs(:,:,i)*pathloss.AP_SUs(i);
-        h_IRS_PUs(:,:,i) = h_IRS_PUs(:,:,i)*pathloss.IRS_PUs(i);
         h_IRS_SUs(:,:,i) = h_IRS_SUs(:,:,i)*pathloss.IRS_SUs(i);
     end
 
@@ -98,6 +100,18 @@ function channel = setChannel(scene, dist)
     channel.h_IRS_PUs = h_IRS_PUs;
     channel.h_IRS_SUs = h_IRS_SUs;
  
+end
+
+%% 初始化预编码矩阵和反射系数矩阵
+function [precode_mat,reflect_mat] = initPrecodeAndReflectMat(scene)
+    %初始化预编码矩阵，按照等功率分配至每个数据流
+    precode_mat = zeros(scene.n_ante_AP,scene.n_data,scene.n_SU);
+    tmp_coeff = sqrt(scene.max_pow/scene.n_SU/scene.n_data);
+    for i = 1:scene.n_SU
+        precode_mat(:,:,i) = tmp_coeff*eye(scene.n_ante_AP,scene.n_data);
+    end
+    %初始化反射系数矩阵，令所有反射单元相移为0；
+    reflect_mat = eye(scene.m_IRS);
 end
 
 %% 计算联合信道
@@ -115,18 +129,6 @@ function [g_AP_PUs,g_AP_SUs] = getUnionChannel(channel,reflect_mat)
     for i = 1:n_SU
         g_AP_SUs(:,:,i) = channel.h_AP_SUs(:,:,i)+channel.h_IRS_SUs(:,:,i)*reflect_mat*channel.h_AP_IRS;
     end
-end
-
-%% 初始化预编码矩阵和反射系数矩阵
-function [precode_mat,reflect_mat] = initPrecodeAndReflectMat(scene)
-    %初始化预编码矩阵，按照等功率分配至每个数据流
-    precode_mat = zeros(scene.n_ante_AP,scene.n_data,scene.n_SU);
-    tmp_coeff = sqrt(scene.max_pow/scene.n_SU/scene.n_data);
-    for i = 1:scene.n_SU
-        precode_mat(:,:,i) = tmp_coeff*eye(scene.n_ante_AP,scene.n_data);
-    end
-    %初始化反射系数矩阵，令所有反射单元相移为0；
-    reflect_mat = eye(scene.n_SU);
 end
 
 %% 计算信号功率矩阵与干扰协方差矩阵
@@ -160,4 +162,3 @@ function sum_rate = getWeightSumRate(sig_mat,jam_mat)
         sum_rate = sum_rate + real(log(det(I_SU+sig_mat(:,:,i)*inv(jam_mat(:,:,i)))));
     end
 end
-
