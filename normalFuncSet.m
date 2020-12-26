@@ -1,10 +1,10 @@
 %% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% ç›¸å½“äºCè¯­è¨€ä¸­çš„å‡½æ•°å£°æ˜ï¼Œåœ¨æ­¤å¤„è¿›è¡Œå£°æ˜çš„å‡½æ•°ï¼Œå‡æ˜¯éœ€åœ¨å¤–éƒ¨ä½¿ç”¨çš„å‡½æ•°ï¼›
-%% è‹¥å‡½æ•°åªåœ¨æœ¬æ–‡ä»¶å…¶ä»–å‡½æ•°å†…è°ƒç”¨ï¼Œå¯ä»¥ä¸åœ¨æ­¤å¤„å£°æ˜ï¼Œå¤–éƒ¨ä¹Ÿå°±æ— æ³•è°ƒç”¨ï¼Œç›¸å½“
-%% äºç§æœ‰å‡½æ•°ï¼›
+%% Ïàµ±ÓÚCÓïÑÔÖĞµÄº¯ÊıÉùÃ÷£¬ÔÚ´Ë´¦½øĞĞÉùÃ÷µÄº¯Êı£¬¾ùÊÇĞèÔÚÍâ²¿Ê¹ÓÃµÄº¯Êı£»
+%% Èôº¯ÊıÖ»ÔÚ±¾ÎÄ¼şÆäËûº¯ÊıÄÚµ÷ÓÃ£¬¿ÉÒÔ²»ÔÚ´Ë´¦ÉùÃ÷£¬Íâ²¿Ò²¾ÍÎŞ·¨µ÷ÓÃ£¬Ïàµ±
+%% ÓÚË½ÓĞº¯Êı£»
 %% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 function Func = normalFuncSet
-    %éœ€è¦å¯¹å¤–å±•ç¤ºçš„æ¥å£
+    %ĞèÒª¶ÔÍâÕ¹Ê¾µÄ½Ó¿Ú
     Func.init = @init;
     Func.setChannel = @setChannel;
     Func.getUnionChannel = @getUnionChannel;
@@ -16,43 +16,43 @@ function Func = normalFuncSet
     Func.getReflectMat = @getReflectMat;
 end
 
-%% åˆå§‹åŒ–å‡½æ•°
+%% ³õÊ¼»¯º¯Êı
 function [scene,dist] = init()
     scene = initScene();
-    pos = initNodePos(scene.n_SU);%posä½œä¸ºä¸­é—´å˜é‡æ— éœ€è¿”å›
+    pos = initNodePos(scene.n_SU);%pos×÷ÎªÖĞ¼ä±äÁ¿ÎŞĞè·µ»Ø
     dist = initNodeDist(pos);
 end
 
-%% åˆå§‹åŒ–åªåŒ…å«å•ä¸ªä¸»ç”¨æˆ·æ—¶çš„åœºæ™¯å‚æ•°
+%% ³õÊ¼»¯Ö»°üº¬µ¥¸öÖ÷ÓÃ»§Ê±µÄ³¡¾°²ÎÊı
 function scene = initScene()
-    %sceneä¸­ç”¨äºä¿å­˜éœ€è¦åœ¨åç»­å‡½æ•°ä¸­ä¼ é€’çš„å‚æ•°
-    scene.n_SU = 5;%æ¬¡çº§ç”¨æˆ·æ•°
-    scene.n_PU = 5;%ä¸»ç½‘ç»œç”¨æˆ·æ•°
-    scene.n_ante_AP = 6;%æ¬¡çº§æ¥å…¥ç‚¹å¤©çº¿æ•°
-    scene.n_ante_PU = 7;%ä¸»ç”¨æˆ·å¤©çº¿æ•°
-    scene.n_ante_SU = 8;%æ¬¡çº§ç”¨æˆ·å¤©çº¿æ•°
-    scene.m_IRS = 5;%IRSåå°„å•å…ƒä¸ªæ•°
-    scene.noise_SU = 1e-11;%æ¬¡çº§ç”¨æˆ·å¤„å™ªå£°å¹³å‡åŠŸç‡
-    scene.max_pow = 0.2;%å®šä¹‰æœ€å¤§åŠŸç‡
-    scene.leak_pow = 1e-5;%å®šä¹‰ä¸»ç”¨æˆ·çš„å¹²æ‰°æ³„æ¼çº¦æŸé˜ˆå€¼
-    scene.n_data = min(scene.n_ante_AP,scene.n_ante_SU);%å‘å°„çš„æ•°æ®æµæ•°é‡
+    %sceneÖĞÓÃÓÚ±£´æĞèÒªÔÚºóĞøº¯ÊıÖĞ´«µİµÄ²ÎÊı
+    scene.n_SU = 5;%´Î¼¶ÓÃ»§Êı
+    scene.n_PU = 5;%Ö÷ÍøÂçÓÃ»§Êı
+    scene.n_ante_AP = 6;%´Î¼¶½ÓÈëµãÌìÏßÊı
+    scene.n_ante_PU = 7;%Ö÷ÓÃ»§ÌìÏßÊı
+    scene.n_ante_SU = 8;%´Î¼¶ÓÃ»§ÌìÏßÊı
+    scene.m_IRS = 5;%IRS·´Éäµ¥Ôª¸öÊı
+    scene.noise_SU = 1e-11;%´Î¼¶ÓÃ»§´¦ÔëÉùÆ½¾ù¹¦ÂÊ
+    scene.max_pow = 0.2;%¶¨Òå×î´ó¹¦ÂÊ
+    scene.leak_pow = 1e-5;%¶¨ÒåÖ÷ÓÃ»§µÄ¸ÉÈÅĞ¹Â©Ô¼ÊøãĞÖµ
+    scene.n_data = min(scene.n_ante_AP,scene.n_ante_SU);%·¢ÉäµÄÊı¾İÁ÷ÊıÁ¿
 end
 
-%% åˆå§‹åŒ–å„ä¸ªèŠ‚ç‚¹ä½ç½®å‚æ•°
+%% ³õÊ¼»¯¸÷¸ö½ÚµãÎ»ÖÃ²ÎÊı
 function pos = initNodePos(n_SU)
-    %å„ä¸ªèŠ‚ç‚¹çš„ä½ç½®
-    pos.AP.x = 0;%æ¬¡çº§æ¥å…¥ç‚¹ä½ç½®
+    %¸÷¸ö½ÚµãµÄÎ»ÖÃ
+    pos.AP.x = 0;%´Î¼¶½ÓÈëµãÎ»ÖÃ
     pos.AP.y = 0;
-    %ä¸»ç”¨æˆ·å’Œæ¬¡çº§ç”¨æˆ·çš„ä½ç½®éœ€è¦ä¿®æ”¹
-    pos.PUs.x = -10 + 10*rand(1,n_PU);%å„ä¸ªä¸»ç½‘ç»œç”¨æˆ·çš„ä½ç½®
+    %Ö÷ÓÃ»§ºÍ´Î¼¶ÓÃ»§µÄÎ»ÖÃĞèÒªĞŞ¸Ä
+    pos.PUs.x = -10 + 10*rand(1,n_PU);%¸÷¸öÖ÷ÍøÂçÓÃ»§µÄÎ»ÖÃ
     pos.PUs.y = 30 + 10*rand(1,n_PU);
-    pos.SUs.x = -5 + 10*rand(1,n_SU);%å„ä¸ªæ¬¡çº§ç”¨æˆ·çš„ä½ç½®
+    pos.SUs.x = -5 + 10*rand(1,n_SU);%¸÷¸ö´Î¼¶ÓÃ»§µÄÎ»ÖÃ
     pos.SUs.y = 20 + 10*rand(1,n_SU);
-    pos.IRS.x = 40;%IRSçš„ä½ç½®
+    pos.IRS.x = 40;%IRSµÄÎ»ÖÃ
     pos.IRS.y = 10;
 end
 
-%% åˆå§‹åŒ–å„ä¸ªèŠ‚ç‚¹é—´è·ç¦»å‚æ•°
+%% ³õÊ¼»¯¸÷¸ö½Úµã¼ä¾àÀë²ÎÊı
 function dist = initNodeDist(pos)
     dist.AP_PUs = sqrt((pos.AP.x-pos.PUs.x)^2+(pos.AP.y-pos.PUs.y)^2);
     dist.AP_SUs = sqrt((pos.AP.x-pos.SUs.x).^2+(pos.AP.y-pos.SUs.y).^2);
@@ -61,11 +61,11 @@ function dist = initNodeDist(pos)
     dist.IRS_SUs = sqrt((pos.IRS.x-pos.SUs.x).^2+(pos.IRS.y-pos.SUs.y).^2);
 end
 
-%% åˆå§‹åŒ–å„ä¸ªèŠ‚ç‚¹é—´çš„è·¯æŸ
+%% ³õÊ¼»¯¸÷¸ö½Úµã¼äµÄÂ·Ëğ
 function pathloss = initPathLoss(dist)
-    %è·¯æŸæŒ‡æ•°ï¼š
+    %Â·ËğÖ¸Êı£º
     pl_exp = 2;
-    %è·¯æŸæ±‚è§£
+    %Â·ËğÇó½â
     pathloss.AP_PUs = 10.^((-30-10*pl_exp*log10(dist.AP_PUs))/10).^0.5;
     pathloss.AP_SUs = 10.^((-30-10*pl_exp*log10(dist.AP_SUs))/10).^0.5;
     pathloss.AP_IRS = 10.^((-30-10*pl_exp*log10(dist.AP_IRS))/10).^0.5;
@@ -74,8 +74,8 @@ function pathloss = initPathLoss(dist)
     
 end
 
-%% è®¾ç½®å„ä¸ªèŠ‚ç‚¹é—´çš„ä¿¡é“
-%% å½“å‰æ‰€ä½¿ç”¨ä¿¡é“å‡ä¸ºç‘ä¸½è¡°è½ä¿¡é“ï¼Œåç»­å¯ä»¥è¿›è¡Œä¿®æ”¹
+%% ÉèÖÃ¸÷¸ö½Úµã¼äµÄĞÅµÀ
+%% µ±Ç°ËùÊ¹ÓÃĞÅµÀ¾ùÎªÈğÀöË¥ÂäĞÅµÀ£¬ºóĞø¿ÉÒÔ½øĞĞĞŞ¸Ä
 function channel = setChannel(scene, dist)
     pathloss = initPathLoss(dist);
     h_AP_PUs = randn(scene.n_ante_PU,scene.n_ante_AP,scene.n_PU)+1j*randn(scene.n_ante_PU,scene.n_ante_AP,scene.n_PU); 
@@ -84,7 +84,7 @@ function channel = setChannel(scene, dist)
     h_IRS_PUs = randn(scene.n_ante_PU,scene.m_IRS,scene.n_PU)+1j*randn(scene.n_ante_PU,scene.m_IRS,scene.n_PU); 
     h_IRS_SUs = randn(scene.n_ante_SU,scene.m_IRS,scene.n_SU)+1j*randn(scene.n_ante_SU,scene.m_IRS,scene.n_SU); 
 
-    %å¯¹ä¸æ¬¡çº§ç”¨æˆ·ç›¸å…³çš„ä¿¡é“å•ç‹¬å¤„ç†
+    %¶ÔÓë´Î¼¶ÓÃ»§Ïà¹ØµÄĞÅµÀµ¥¶À´¦Àí
     for i = 1:scene.n_SU
         h_AP_PUs(:,:,i) = h_AP_PUs(:,:,i)*pathloss.AP_PUs(i);
         h_AP_SUs(:,:,i) = h_AP_SUs(:,:,i)*pathloss.AP_SUs(i);
@@ -100,16 +100,16 @@ function channel = setChannel(scene, dist)
  
 end
 
-%% è®¡ç®—è”åˆä¿¡é“
+%% ¼ÆËãÁªºÏĞÅµÀ
 function [g_AP_PUs,g_AP_SUs] = getUnionChannel(channel,reflect_mat)
-    %ä¸»ç”¨æˆ·çš„è”åˆä¿¡é“
+    %Ö÷ÓÃ»§µÄÁªºÏĞÅµÀ
     g_AP_PUs = zeros(size(channel.h_AP_PUs));
     n_PU = size(channel.h_AP_PUs,3);
     for i = 1:n_PU
         g_AP_PUs(:,:,i) = channel.h_AP_PUs(:,:,i)+channel.h_IRS_PUs(:,:,i)*reflect_mat*channel.h_AP_IRS;
     end
     
-    %æ¬¡çº§ç”¨æˆ·çš„è”åˆä¿¡é“
+    %´Î¼¶ÓÃ»§µÄÁªºÏĞÅµÀ
     g_AP_SUs = zeros(size(channel.h_AP_SUs));
     n_SU = size(channel.h_AP_SUs,3);
     for i = 1:n_SU
@@ -117,24 +117,24 @@ function [g_AP_PUs,g_AP_SUs] = getUnionChannel(channel,reflect_mat)
     end
 end
 
-%% åˆå§‹åŒ–é¢„ç¼–ç çŸ©é˜µå’Œåå°„ç³»æ•°çŸ©é˜µ
+%% ³õÊ¼»¯Ô¤±àÂë¾ØÕóºÍ·´ÉäÏµÊı¾ØÕó
 function [precode_mat,reflect_mat] = initPrecodeAndReflectMat(scene)
-    %åˆå§‹åŒ–é¢„ç¼–ç çŸ©é˜µï¼ŒæŒ‰ç…§ç­‰åŠŸç‡åˆ†é…è‡³æ¯ä¸ªæ•°æ®æµ
+    %³õÊ¼»¯Ô¤±àÂë¾ØÕó£¬°´ÕÕµÈ¹¦ÂÊ·ÖÅäÖÁÃ¿¸öÊı¾İÁ÷
     precode_mat = zeros(scene.n_ante_AP,scene.n_data,scene.n_SU);
     tmp_coeff = sqrt(scene.max_pow/scene.n_SU/scene.n_data);
     for i = 1:scene.n_SU
         precode_mat(:,:,i) = tmp_coeff*eye(scene.n_ante_AP,scene.n_data);
     end
-    %åˆå§‹åŒ–åå°„ç³»æ•°çŸ©é˜µï¼Œä»¤æ‰€æœ‰åå°„å•å…ƒç›¸ç§»ä¸º0ï¼›
+    %³õÊ¼»¯·´ÉäÏµÊı¾ØÕó£¬ÁîËùÓĞ·´Éäµ¥ÔªÏàÒÆÎª0£»
     reflect_mat = eye(scene.n_SU);
 end
 
-%% è®¡ç®—ä¿¡å·åŠŸç‡çŸ©é˜µä¸å¹²æ‰°åæ–¹å·®çŸ©é˜µ
+%% ¼ÆËãĞÅºÅ¹¦ÂÊ¾ØÕóÓë¸ÉÈÅĞ­·½²î¾ØÕó
 function [sig_mat,jam_mat] = getSigAndJamMat(g_AP_SUs,precode_mat,noise_SU)
     [n_ante_SU,n_ante_AP,n_SU] = size(g_AP_SUs);
-    I_SU = eye(n_ante_SU);%å•ä½çŸ©é˜µ
+    I_SU = eye(n_ante_SU);%µ¥Î»¾ØÕó
     
-    %ä¸´æ—¶å˜é‡ï¼šç”¨äºå­˜å‚¨æ‰€æœ‰é¢„ç¼–ç çŸ©é˜µä¸å…¶å…±è½­è½¬ç½®ä¹˜ç§¯çš„å’Œ
+    %ÁÙÊ±±äÁ¿£ºÓÃÓÚ´æ´¢ËùÓĞÔ¤±àÂë¾ØÕóÓëÆä¹²éî×ªÖÃ³Ë»ıµÄºÍ
     Q = zeros(n_ante_AP,n_ante_AP);
     for i = 1:n_SU
         Q = Q + precode_mat(:,:,i)*precode_mat(:,:,i)';
@@ -149,14 +149,14 @@ function [sig_mat,jam_mat] = getSigAndJamMat(g_AP_SUs,precode_mat,noise_SU)
     end
 end
 
-%% è®¡ç®—æ‰€æœ‰æ¬¡çº§ç”¨æˆ·åŠ æƒå’Œé€Ÿç‡
+%% ¼ÆËãËùÓĞ´Î¼¶ÓÃ»§¼ÓÈ¨ºÍËÙÂÊ
 function sum_rate = getWeightSumRate(sig_mat,jam_mat)
     [n_ante_SU,~,n_SU] = size(sig_mat);
-    I_SU = eye(n_ante_SU);%å•ä½çŸ©é˜µï¼Œç”¨äºæ±‚è§£é€Ÿç‡
+    I_SU = eye(n_ante_SU);%µ¥Î»¾ØÕó£¬ÓÃÓÚÇó½âËÙÂÊ
     
     sum_rate = 0;
     for i = 1:n_SU
-        %æ­¤å¤„æ˜¯å¦è¦åŠ å…¥ä¸æœ€å¤§åŠŸç‡max_powç›¸ä¹˜ï¼Œéœ€è¦åç»­è€ƒè™‘
+        %´Ë´¦ÊÇ·ñÒª¼ÓÈëÓë×î´ó¹¦ÂÊmax_powÏà³Ë£¬ĞèÒªºóĞø¿¼ÂÇ
         sum_rate = sum_rate + real(log(det(I_SU+sig_mat(:,:,i)*inv(jam_mat(:,:,i)))));
     end
 end

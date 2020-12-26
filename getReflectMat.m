@@ -1,6 +1,6 @@
-%% è®¡ç®—IRSåå°„ç³»æ•°
+%% ¼ÆËãIRS·´ÉäÏµÊı
 function reflect_mat = getReflectMat()
-    %% å¼•å…¥å‡½æ•°é›†
+    %% ÒıÈëº¯Êı¼¯
     func = normalFuncSet;
     reflect_mat = ones();
 end

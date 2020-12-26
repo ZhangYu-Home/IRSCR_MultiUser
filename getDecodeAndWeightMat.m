@@ -1,4 +1,4 @@
-%% è®¡ç®—è§£ç çŸ©é˜µå’Œæƒé‡çŸ©é˜µ
+%% ¼ÆËã½âÂë¾ØÕóºÍÈ¨ÖØ¾ØÕó
 function [decode_mat,weight_mat] = getDecodeAndWeightMat(sig_mat,jam_mat,g_AP_SUs,precode_mat)
     [n_ante_SU,~,n_SU] = size(g_AP_SUs);
     n_data = size(precode_mat,2);

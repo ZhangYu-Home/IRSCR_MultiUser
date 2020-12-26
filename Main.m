@@ -1,18 +1,18 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%æ­¤æ–‡ä»¶ç”¨äºä»¿çœŸå•ä¸ªä¸»ç”¨æˆ·çš„æƒ…å†µï¼›ä»¿çœŸå›¾çš„æ¨ªçºµåæ ‡åˆ†åˆ«ä¸ºï¼šæœ€å¤§å¯ç”¨å‘å°„åŠŸç‡å’ŒåŠ æƒ
-%å’Œé€Ÿç‡ï¼›åœ¨ä»¿çœŸæ—¶ï¼Œä»¤å„ä¸ªæ¬¡çº§ç”¨æˆ·æƒé‡å‡ä¸º1ï¼›
+%´ËÎÄ¼şÓÃÓÚ·ÂÕæµ¥¸öÖ÷ÓÃ»§µÄÇé¿ö£»·ÂÕæÍ¼µÄºá×İ×ø±ê·Ö±ğÎª£º×î´ó¿ÉÓÃ·¢Éä¹¦ÂÊºÍ¼ÓÈ¨
+%ºÍËÙÂÊ£»ÔÚ·ÂÕæÊ±£¬Áî¸÷¸ö´Î¼¶ÓÃ»§È¨ÖØ¾ùÎª1£»
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 close all;
 clear;
 clc;
 
-%% åˆå§‹åŒ–å‚æ•°
-func = normalFuncSet; %å¯¼å…¥å‡½æ•°é›†
-n_monte = 2; %è’™ç‰¹å¡æ´›ä»¿çœŸæ¬¡æ•°
-n_pow = 10; %åŠŸç‡è¿­ä»£çš„æ¬¡æ•°     
-[scene,dist] = func.init();%åˆå§‹åŒ–åœºæ™¯å‚æ•°
+%% ³õÊ¼»¯²ÎÊı
+func = normalFuncSet; %µ¼Èëº¯Êı¼¯
+n_monte = 2; %ÃÉÌØ¿¨Âå·ÂÕæ´ÎÊı
+n_pow = 10; %¹¦ÂÊµü´úµÄ´ÎÊı     
+[scene,dist] = func.init();%³õÊ¼»¯³¡¾°²ÎÊı
 
-%% è¿›è¡Œè’™ç‰¹å¡æ´›ä»¿çœŸ
+%% ½øĞĞÃÉÌØ¿¨Âå·ÂÕæ
 tic
 for cnt_monte = 1:n_monte
     disp(['Iteration = ', num2str(cnt_monte)]);
@@ -20,21 +20,21 @@ for cnt_monte = 1:n_monte
     for cnt_pow = 1:n_pow
         scene.max_pow = 0.2*cnt_pow;
         %disp(['    The max Power is ', num2str(scene.max_pow),'W.']);
-        %åˆå§‹åŒ–åå°„ç³»æ•°çŸ©é˜µå’Œé¢„ç¼–ç çŸ©é˜µ
+        %³õÊ¼»¯·´ÉäÏµÊı¾ØÕóºÍÔ¤±àÂë¾ØÕó
         [precode_mat,reflect_mat] = func.initPrecodeAndReflectMat(scene);       
-        %è®¡ç®—è”åˆä¿¡é“
+        %¼ÆËãÁªºÏĞÅµÀ
         [g_AP_PUs,g_AP_SUs] = func.getUnionChannel(channel,reflect_mat);
-        %è®¡ç®—æ¯ä¸ªæ¬¡çº§ç”¨æˆ·å¯¹åº”çš„åŠŸç‡çŸ©é˜µå’Œå¹²æ‰°åæ–¹å·®çŸ©é˜µ
+        %¼ÆËãÃ¿¸ö´Î¼¶ÓÃ»§¶ÔÓ¦µÄ¹¦ÂÊ¾ØÕóºÍ¸ÉÈÅĞ­·½²î¾ØÕó
         [sig_mat,jam_mat] = func.getSigAndJamMat(g_AP_SUs,precode_mat,scene.noise_SU);
-        %è®¡ç®—è§£ç çŸ©é˜µå’Œè¾…åŠ©çŸ©é˜µ
+        %¼ÆËã½âÂë¾ØÕóºÍ¸¨Öú¾ØÕó
         [decode_mat,weight_mat] = getDecodeAndWeightMat(sig_mat,jam_mat,g_AP_SUs,precode_mat);
         %precode_mat
         
         precode_mat = getPrecodeMat(scene,g_AP_PUs,g_AP_SUs,decode_mat,weight_mat,precode_mat);
         %precode_mat
-        %è®¡ç®—æ¯ä¸ªæ¬¡çº§ç”¨æˆ·å¯¹åº”çš„åŠŸç‡çŸ©é˜µå’Œå¹²æ‰°åæ–¹å·®çŸ©é˜µ
+        %¼ÆËãÃ¿¸ö´Î¼¶ÓÃ»§¶ÔÓ¦µÄ¹¦ÂÊ¾ØÕóºÍ¸ÉÈÅĞ­·½²î¾ØÕó
         [sig_mat,jam_mat] = func.getSigAndJamMat(g_AP_SUs,precode_mat,scene.noise_SU);
-        %% è®¡ç®—æ‰€æœ‰æ¬¡çº§ç”¨æˆ·çš„é€Ÿç‡å’Œ
+        %% ¼ÆËãËùÓĞ´Î¼¶ÓÃ»§µÄËÙÂÊºÍ
         sum_rate = func.getWeightSumRate(sig_mat,jam_mat);
         disp(['        The sum of rates is ',num2str(sum_rate),' bps.']);
         

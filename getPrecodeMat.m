@@ -1,6 +1,6 @@
-%% è®¡ç®—é¢„ç¼–ç çŸ©é˜µ
+%% ¼ÆËãÔ¤±àÂë¾ØÕó
 function precode_mat = getPrecodeMat(scene,g_AP_PU,g_AP_SUs,decode_mat,weight_mat,precode_mat)   
-    %% å¼•å…¥å‡½æ•°é›†
+    %% ÒıÈëº¯Êı¼¯
     func = normalFuncSet;
-    %% è®¡ç®—ç›¸å…³å‚æ•°
+    %% ¼ÆËãÏà¹Ø²ÎÊı
 end
