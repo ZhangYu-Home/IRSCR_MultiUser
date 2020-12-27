@@ -13,9 +13,30 @@ function precode_mat = getPrecodeMat(scene,g_AP_PUs,g_AP_SUs,decode_mat,weight_m
         X_k(:,:,i) = g_AP_PUs(:,:,i)'*g_AP_PUs(:,:,i);
     end
     
-    cvx_begin
+    objFunc = 0;
+    consPower = 0;
+    consInter = zeros(scene.n_PU,1);
     
-    
-    precode_mat = zeros(scene.n_ante_AP,scene.n_data,scene.n_SU);
-    
+    size(X_0)
+    scene.n_ante_AP
+    scene.n_data
+    cvx_solver
+    cvx_begin      %CVX solves convex problem
+        variable F(scene.n_ante_AP,scene.n_data,scene.n_SU) complex
+        for i = 1:scene.n_SU
+            objFunc = objFunc + trace(F(:,:,i)'*X_0*F(:,:,i)) - trace(Y(:,:,i)*F(:,:,i)) - trace(Y(:,:,i)'*F(:,:,i)');
+            consPower = consPower + trace(F(:,:,i)'*F(:,:,i));
+            for j = 1:scene.n_PU
+                consInter(j) = consInter(j) + trace(F(:,:,i)'*X_k(:,:,j)*F(:,:,i));
+            end
+        end
+        minimize(objFunc)	%目标函数
+        subject to
+            %总功率约束
+            consPower <= scene.max_pow;
+            for j = 1:scene.n_PU
+                consInter(j) <= scene.leak_pow;
+            end
+    cvx_end
+    precode_mat = F;
 end

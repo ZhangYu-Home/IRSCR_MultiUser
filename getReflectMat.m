@@ -40,6 +40,17 @@ function reflect_mat = getReflectMat(scene,channel,precode_mat,reflect_mat,decod
         reflect_vec_tmp = reflect_vec;%将上一次结果作为初始点
         lambda = lambda * 2;
         
+        %CVX能否使用还有待验证
+        cvx_begin
+            variable theta(scene.m_IRS) complex
+            minimize(theta'*gamma_0*theta + 2*real(theta'*d_0_conj) - 2*lambda*real(theta'*reflect_vec_tmp));
+            subject to
+                for i = 1:scene.n_PU
+                    theta'*gamma_k(:,:,i)*theta + 2*real(theta'*d_k_conj(:,i)) <= leak_pow_k(i);
+                end
+                abs(theta) <= 1;
+        cvx_end
+        
         % 当每个IRS反射系数的模接近于1的时候，跳出循环
         if(sum(abs(abs(reflect_vec)-ones(scene.m_IRS,1))) < 0.01)
             break;
