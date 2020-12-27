@@ -53,10 +53,10 @@ end
 
 %% 初始化各个节点间距离参数
 function dist = initNodeDist(pos)
-    dist.AP_PUs = sqrt((pos.AP.x-pos.PUs.x)^2+(pos.AP.y-pos.PUs.y)^2);
+    dist.AP_PUs = sqrt((pos.AP.x-pos.PUs.x).^2+(pos.AP.y-pos.PUs.y).^2);
     dist.AP_SUs = sqrt((pos.AP.x-pos.SUs.x).^2+(pos.AP.y-pos.SUs.y).^2);
     dist.AP_IRS = sqrt((pos.AP.x-pos.IRS.x)^2+(pos.AP.y-pos.IRS.y)^2);
-    dist.IRS_PUs = sqrt((pos.IRS.x-pos.PUs.x)^2+(pos.IRS.y-pos.PUs.y)^2);
+    dist.IRS_PUs = sqrt((pos.IRS.x-pos.PUs.x).^2+(pos.IRS.y-pos.PUs.y).^2);
     dist.IRS_SUs = sqrt((pos.IRS.x-pos.SUs.x).^2+(pos.IRS.y-pos.SUs.y).^2);
 end
 
