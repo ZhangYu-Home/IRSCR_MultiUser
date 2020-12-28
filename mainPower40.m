@@ -8,9 +8,9 @@ clc;
 
 %% 初始化参数
 func = normalFuncSet; %导入函数集
-n_monte = 2; %蒙特卡洛仿真次数
+n_monte = 100; %蒙特卡洛仿真次数
 n_pow = 10; %功率迭代的次数
-acc_stop = 0.01;%主程序运行时的停止精度
+acc_stop = 0.001;%主程序运行时的停止精度
 max_cnt_alg = 100;%算法最大迭代次数
 rate_mat = zeros(n_pow,3);%用于存储速率
 
