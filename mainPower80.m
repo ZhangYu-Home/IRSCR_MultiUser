@@ -8,11 +8,11 @@ clc;
 
 %% 初始化参数
 func = normalFuncSet; %导入函数集
-n_monte = 100; %蒙特卡洛仿真次数
+n_monte = 10; %蒙特卡洛仿真次数
 n_pow = 10; %功率迭代的次数
 acc_stop = 0.001;%主程序运行时的停止精度
 max_cnt_alg = 100;%算法最大迭代次数
-rate_mat = zeros(n_pow,2);%用于存储速率
+rate_mat = zeros(n_pow,1);%用于存储速率
 
 %% 初始化场景参数
 [scene,dist] = func.init();
@@ -35,24 +35,7 @@ for cnt_monte = 1:n_monte
         [sig_mat,jam_mat] = func.getSigAndJamMat(g_AP_SUs,precode_mat,scene.noise_SU);
         %%计算所有次级用户的速率和
         sum_rate = func.getWeightSumRate(sig_mat,jam_mat);
-        disp(['The front sum of rates is ',num2str(sum_rate),' bps.']);      
-        for cnt_iter = 1:max_cnt_alg
-            sum_rate_tmp = sum_rate;
-            %计算解码矩阵和辅助矩阵
-            [decode_mat,weight_mat] = getDecodeAndWeightMat(sig_mat,jam_mat,g_AP_SUs,precode_mat);
-            %给定其他参数的情况下计算预编码矩阵
-            precode_mat = getPrecodeMat(scene,g_AP_PUs,g_AP_SUs,decode_mat,weight_mat);
-            %计算每个次级用户对应的功率矩阵和干扰协方差矩阵
-            [sig_mat,jam_mat] = func.getSigAndJamMat(g_AP_SUs,precode_mat,scene.noise_SU);
-            %计算所有次级用户的速率和
-            sum_rate = func.getWeightSumRate(sig_mat,jam_mat);
-            disp(['The middle1 sum of rates is ',num2str(sum_rate),' bps.']);
-            if(abs(sum_rate - sum_rate_tmp) < acc_stop)
-                break;
-            end
-        end
-        rate_mat(cnt_pow,1) = rate_mat(cnt_pow,1) + sum_rate;
-        disp(['The back1 sum of rates is ',num2str(sum_rate),' bps.']);
+        %disp(['The front sum of rates is ',num2str(sum_rate),' bps.']);      
         
         for cnt_iter = 1:max_cnt_alg
             sum_rate_tmp = sum_rate;
@@ -68,13 +51,13 @@ for cnt_monte = 1:n_monte
             [sig_mat,jam_mat] = func.getSigAndJamMat(g_AP_SUs,precode_mat,scene.noise_SU);
             %%计算所有次级用户的速率和
             sum_rate = func.getWeightSumRate(sig_mat,jam_mat);
-            disp(['The middle2 sum of rates is ',num2str(sum_rate),' bps.']);
+            %disp(['The middle2 sum of rates is ',num2str(sum_rate),' bps.']);
             if(abs(sum_rate - sum_rate_tmp) < acc_stop)
                 break;
             end
         end
-        rate_mat(cnt_pow,2) = rate_mat(cnt_pow,2) + sum_rate;
-        disp(['The back2 sum of rates is ',num2str(sum_rate),' bps.']);
+        rate_mat(cnt_pow) = rate_mat(cnt_pow) + sum_rate;
+        %disp(['The back2 sum of rates is ',num2str(sum_rate),' bps.']);
     end
 end
 rate_mat = rate_mat/n_monte;
